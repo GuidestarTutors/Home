@@ -467,11 +467,9 @@ function render(){
     const a = document.createElement('a');
     a.className = 'demo-card';
     a.href = urlFor(d.repo);
-    a.target = '_blank';
-    a.rel = 'noopener';
     a.style.setProperty('--c', color);
     a.style.animationDelay = (i * 0.05) + 's';
-    a.setAttribute('aria-label', `Launch ${d.title} demo (opens in new tab)`);
+    a.setAttribute('aria-label', `Open ${d.title} demo`);
     a.innerHTML = `
       ${SPARKLE}
       <div class="dc-top">
