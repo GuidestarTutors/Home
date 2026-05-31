@@ -393,6 +393,7 @@ const DEMOS = [
   { repo:'Sine-Rule',   title:'The Sine Rule',    desc:'a / sin A = b / sin B — solve triangles by linking each side to its opposite angle.', subject:'Trigonometry', icon:'triangle' },
   { repo:'Cosine-Rule', title:'The Cosine Rule',  desc:'c² = a² + b² − 2ab·cos C — the Pythagorean theorem’s flexible cousin for any triangle.', subject:'Trigonometry', icon:'triangle' },
   { repo:'Snell-s-Law', title:"Snell's Law",      desc:'n₁ sin θ₁ = n₂ sin θ₂ — see how light bends as it crosses between two media.', subject:'Optics', icon:'prism' },
+  { repo:'Completing-the-Square', title:'Completing the Square', desc:'x² + bx = (x + b/2)² − (b/2)² — fold a quadratic into a literal square, then prove it with algebra and a little history.', subject:'Algebra', icon:'square' },
   /* ←  add the next demo on a new line, just like the ones above  */
 ];
 
@@ -400,6 +401,7 @@ const DEMOS = [
 const SUBJECT_COLOR = {
   'Trigonometry': 'var(--c-trig)',
   'Optics':       'var(--c-optics)',
+  'Algebra':      'var(--c-trig2)',
   /* fallback handled below */
 };
 const SUBJECT_CYCLE = ['var(--c-trig)','var(--c-trig2)','var(--c-optics)','var(--c-default)'];
@@ -409,6 +411,7 @@ const ICONS = {
   circle:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9" stroke-dasharray="2.5 3"/><path d="M12 12 L19 8.5" stroke-linecap="round"/><circle cx="19" cy="8.5" r="1.4" fill="currentColor" stroke="none"/></svg>',
   triangle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 19 L20 19 L15 6 Z"/><path d="M15 6 L4 19" stroke-dasharray="2 2.5" opacity="0.6"/></svg>',
   prism:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3 L21 20 L3 20 Z"/><path d="M2 9 L12 12" stroke-linecap="round"/><path d="M12 12 L22 16" stroke-linecap="round" opacity="0.6"/></svg>',
+  square:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12" rx="1"/><rect x="16" y="16" width="4" height="4" rx="0.5" stroke-dasharray="2 1.6"/></svg>',
   wave:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12 q5 -9 10 0 t10 0"/></svg>',
   dot:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>',
 };
@@ -499,15 +502,16 @@ render();
 (function(){
   const root = document.documentElement;
   const toggle = document.getElementById('theme-toggle');
+  const KEY = 'guidestar-theme';          // shared key across every Guidestar page
   let stored = null;
-  try { stored = localStorage.getItem('gt-theme'); } catch(e){}
+  try { stored = localStorage.getItem(KEY) || localStorage.getItem('gt-theme'); } catch(e){}  // migrate old key
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   apply(stored || (prefersDark ? 'dark' : 'light'));
   function apply(t){ root.setAttribute('data-theme', t); toggle.setAttribute('aria-pressed', t==='dark'); }
   toggle.addEventListener('click', ()=>{
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     apply(next);
-    try { localStorage.setItem('gt-theme', next); } catch(e){}
+    try { localStorage.setItem(KEY, next); } catch(e){}
   });
 })();
 
